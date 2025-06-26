@@ -15,3 +15,6 @@ export const getTheProfile = async () => {
 export const refreshToken = async () => {
   const res = await api.post("/authentication/refresh-token");
 };
+export const logoutUser = async () => {
+  await api.post("/authentication/logout");
+};
