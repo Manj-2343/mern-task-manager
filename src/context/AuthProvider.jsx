@@ -3,13 +3,13 @@ import {
   getTheProfile,
   refreshToken,
   logoutUser,
-} from "../services/authServices"; // 👈 import logoutUser
+} from "../services/authServices";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // ✅ start as true
 
   const autoLogin = async () => {
     try {
@@ -24,15 +24,14 @@ const AuthProvider = ({ children }) => {
         console.log("autoLogin not applicable");
       }
     } finally {
-      setLoading(false);
+      setLoading(false); // ✅ loading complete
     }
   };
 
-  // ✅ Add logout functionality
   const logout = async () => {
     try {
-      await logoutUser(); // Clear cookie on server
-      setUser(null); // Clear state on frontend
+      await logoutUser();
+      setUser(null);
     } catch (error) {
       console.log("Logout error:", error);
     }
