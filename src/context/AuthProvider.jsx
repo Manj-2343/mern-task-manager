@@ -11,7 +11,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true); // ✅ start as true
 
-  const autoLogin = async () => {
+  const restoreUserFromServer = async () => {
     try {
       const profile = await getTheProfile();
       setUser(profile);
@@ -30,17 +30,26 @@ const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await logoutUser();
-      setUser(null);
+      await logoutUser(); // Calls backend logout
+      localStorage.removeItem("user"); // Clear localStorage
+      setUser(null); // Reset context
+      console.log("User logged out & localStorage cleared"); // Debug log
     } catch (error) {
-      console.log("Logout error:", error);
+      console.error("Logout error:", error);
     }
   };
 
   useEffect(() => {
-    autoLogin();
-  }, []);
+    const storedUser = localStorage.getItem("user");
 
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+      setLoading(false); // Done!
+    } else {
+      restoreUserFromServer(); // Try backend auto-login
+    }
+  }, []);
+  // Auto-login using refresh token 🔄 and Proper logout clearing both client & server 🚪
   return (
     <AuthContext.Provider value={{ user, setUser, loading, logout }}>
       {children}
