@@ -1,17 +1,42 @@
 import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Login from "./pages/Login";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Dashboard />}></Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/register" element={<Register />}></Route>
-        <Route path="/dashboard" element={<Dashboard />}></Route>
+        <Route path="/" element={<Navigate to="/dashboard" />} />
+
+        {/* Auth routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* Protected route */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Catch-all: wildcard for undefined routes */}
+        <Route
+          path="*"
+          element={
+            <h2 className="text-center mt-10 text-xl">404 - Page Not Found</h2>
+          }
+        />
       </Routes>
     </Router>
   );
