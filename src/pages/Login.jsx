@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { loginUser } from "../services/authServices";
 import { useAuth } from "../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import GoogleLoginButton from "../features/auth/GoogleLoginButton";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -56,6 +57,7 @@ const Login = () => {
           <button className="w-full bg-red-600 text-gray-50 py-3 my-2 rounded-md hover:bg-red-800 font-semibold transition-all">
             Login
           </button>
+          <GoogleLoginButton />
         </form>
         <p className="text-sm text-gray-600 mt-2 text-center">
           Don't have Account?

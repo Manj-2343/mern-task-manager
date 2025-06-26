@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { useAuth } from "../context/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Dashboard = () => {
   const { user, logout, loading } = useAuth();
@@ -7,13 +9,18 @@ const Dashboard = () => {
 
   const handleLogout = async () => {
     try {
-      await logout();
+      await logout(); // Uses the fixed AuthProvider.logout()
       navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error);
     }
   };
-
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:5002/cors-test", { withCredentials: true })
+  //     .then((res) => console.log(res.data))
+  //     .catch((err) => console.error(err));
+  // });
   return (
     <div className="p-4">
       {user ? (
