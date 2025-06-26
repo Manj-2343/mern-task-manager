@@ -1,5 +1,9 @@
 import { useState, useEffect, useContext, createContext } from "react";
-import { getTheProfile, refreshToken } from "../services/authServices";
+import {
+  getTheProfile,
+  refreshToken,
+  logoutUser,
+} from "../services/authServices"; // 👈 import logoutUser
 
 const AuthContext = createContext();
 
@@ -24,12 +28,22 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  // ✅ Add logout functionality
+  const logout = async () => {
+    try {
+      await logoutUser(); // Clear cookie on server
+      setUser(null); // Clear state on frontend
+    } catch (error) {
+      console.log("Logout error:", error);
+    }
+  };
+
   useEffect(() => {
     autoLogin();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, loading }}>
+    <AuthContext.Provider value={{ user, setUser, loading, logout }}>
       {children}
     </AuthContext.Provider>
   );
